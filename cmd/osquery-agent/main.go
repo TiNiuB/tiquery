@@ -32,9 +32,11 @@ func main() {
 	}
 
 	go func() {
-		data := fmt.Sprintf(`{"instance": "%v", "address": "%v"}`, *instanceName, *serviceAddr)
-		http.Post("http://"+*tiqueryAddr+"/osquery/register", "application/json", strings.NewReader(data))
-		time.Sleep(5 * time.Second)
+		for {
+			data := fmt.Sprintf(`{"instance": "%v", "address": "%v"}`, *instanceName, *serviceAddr)
+			http.Post("http://"+*tiqueryAddr+"/osquery/register", "application/json", strings.NewReader(data))
+			time.Sleep(time.Second)
+		}
 	}()
 
 	router := mux.NewRouter()
