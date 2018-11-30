@@ -12,3 +12,9 @@ CREATE TABLE IF NOT EXISTS `pd_store` (
         `last_heartbeat_ts` VARCHAR(255),
         `uptime` VARCHAR(255)
 );
+
+CREATE TABLE IF NOT EXISTS `pd_store_label` (
+        `id` BIGINT,
+        `label_key` VARCHAR(255),
+        `label_value` VARCHAR(255)
+);
