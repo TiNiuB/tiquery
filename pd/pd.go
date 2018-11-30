@@ -16,6 +16,7 @@ func Register(r *mux.Router) {
 	r.HandleFunc("/pd_store", handlerFunc(getStores))
 	r.HandleFunc("/pd_store_label", handlerFunc(getStoreLabels))
 	r.HandleFunc("/pd_region", handlerFunc(getRegions))
+	r.HandleFunc("/pd_region_peer", handlerFunc(getRegionPeers))
 }
 
 func handlerFunc(f func() ([]byte, error)) http.HandlerFunc {

@@ -14,7 +14,7 @@ func getRegions() ([]byte, error) {
 				Version uint64 `json:"version"`
 			} `json:"epoch"`
 			Leader struct {
-				ID        uint64 `son:"id"`
+				ID        uint64 `json:"id"`
 				StoreID   uint64 `json:"store_id"`
 				IsLearner bool   `json:"is_learner"`
 			} `json:"leader"`

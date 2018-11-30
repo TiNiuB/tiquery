@@ -32,3 +32,12 @@ CREATE TABLE IF NOT EXISTS `pd_region` (
         `approximate_size`      BIGINT,
         `approximate_keys`      BIGINT
 );
+
+CREATE TABLE IF NOT EXISTS `pd_region_peer` (
+        `id`                    BIGINT,
+        `region_id`             BIGINT,
+        `store_id`              BIGINT,
+        `is_leader`             INT,
+        `is_down`               INT,
+        `is_pending`            INT
+);
