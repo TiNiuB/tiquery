@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `pd_stores` (
+CREATE TABLE IF NOT EXISTS `pd_store` (
         `id` BIGINT,
         `address` VARCHAR(255),
         `state` VARCHAR(255),
