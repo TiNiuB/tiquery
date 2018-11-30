@@ -1,0 +1,43 @@
+package pd
+
+import (
+	"encoding/json"
+	"flag"
+	"io/ioutil"
+	"net/http"
+	"path"
+
+	"github.com/gorilla/mux"
+)
+
+var pdAddr = flag.String("pd-addr", "127.0.0.1:2379", "pd server address")
+
+// Register service to router.
+func Register(r *mux.Router) {
+	r.HandleFunc("/pd_stores", handleFunc(getStores))
+}
+
+func handleFunc(f func() ([]byte, error)) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		data, err := f()
+		if err != nil {
+			w.WriteHeader(500)
+			w.Write([]byte(err.Error()))
+			return
+		}
+		w.Write(data)
+	}
+}
+
+func httpGet(uri string, data interface{}) error {
+	res, err := http.Get(path.Join("http://"+*pdAddr, uri))
+	if err != nil {
+		return err
+	}
+	defer res.Body.Close()
+	payload, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return err
+	}
+	return json.Unmarshal(payload, data)
+}
