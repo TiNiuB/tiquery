@@ -16,14 +16,14 @@ func getStores() ([]byte, error) {
 				State   string `json:"state_name"`
 			} `json:"store"`
 			Status struct {
-				Capacity        ByteSize   `json:"capacity"`
-				Available       ByteSize   `json:"available"`
-				LeaderCount     int        `json:"leader_count"`
-				RegionCount     int        `json:"region_count"`
-				IsBusy          bool       `json:"is_busy"`
-				StartTS         *time.Time `json:"start_ts"`
-				LastHeartbeatTS *time.Time `json:"last_heartbeat_ts"`
-				Uptime          Duration   `json:"uptime"`
+				Capacity        ByteSize  `json:"capacity"`
+				Available       ByteSize  `json:"available"`
+				LeaderCount     int       `json:"leader_count"`
+				RegionCount     int       `json:"region_count"`
+				IsBusy          bool      `json:"is_busy"`
+				StartTS         time.Time `json:"start_ts"`
+				LastHeartbeatTS time.Time `json:"last_heartbeat_ts"`
+				Uptime          Duration  `json:"uptime"`
 			} `json:"status"`
 		} `json:"stores"`
 	}

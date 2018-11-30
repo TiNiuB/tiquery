@@ -41,3 +41,9 @@ CREATE TABLE IF NOT EXISTS `pd_region_peer` (
         `is_down`               INT,
         `is_pending`            INT
 );
+
+CREATE TABLE IF NOT EXISTS `pd_config` (
+        `module`                VARCHAR(255),
+        `key`                   VARCHAR(255),
+        `value`                 VARCHAR(255)
+);
