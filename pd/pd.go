@@ -15,6 +15,7 @@ var pdAddr = flag.String("pd-addr", "127.0.0.1:2379", "pd server address")
 func Register(r *mux.Router) {
 	r.HandleFunc("/pd_store", handlerFunc(getStores))
 	r.HandleFunc("/pd_store_label", handlerFunc(getStoreLabels))
+	r.HandleFunc("/pd_region", handlerFunc(getRegions))
 }
 
 func handlerFunc(f func() ([]byte, error)) http.HandlerFunc {
