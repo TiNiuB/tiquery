@@ -5,7 +5,6 @@ import (
 	"flag"
 	"io/ioutil"
 	"net/http"
-	"path"
 
 	"github.com/gorilla/mux"
 )
@@ -30,7 +29,7 @@ func handleFunc(f func() ([]byte, error)) http.HandlerFunc {
 }
 
 func httpGet(uri string, data interface{}) error {
-	res, err := http.Get(path.Join("http://"+*pdAddr, uri))
+	res, err := http.Get("http://" + *pdAddr + uri)
 	if err != nil {
 		return err
 	}
