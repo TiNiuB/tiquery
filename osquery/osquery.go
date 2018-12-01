@@ -17,7 +17,7 @@ func Register(r *mux.Router) {
 		var res []map[string]interface{}
 		for _, agent := range agent.GetAgentList() {
 			var partialRes []map[string]interface{}
-			if err := httpGet(agent.Address, "/"+table, &partialRes); err == nil {
+			if err := httpGet(agent.Address, "/osquery/"+table, &partialRes); err == nil {
 				for _, row := range partialRes {
 					row["instance"] = agent.Instance
 				}
@@ -31,7 +31,7 @@ func Register(r *mux.Router) {
 
 // RegisterAgent registers the service for tiquery-agent.
 func RegisterAgent(r *mux.Router) {
-	r.HandleFunc("/{table}", func(w http.ResponseWriter, r *http.Request) {
+	r.HandleFunc("/osquery/{table}", func(w http.ResponseWriter, r *http.Request) {
 		table := mux.Vars(r)["table"]
 		cmd := exec.Command(`osqueryi`, `SELECT * FROM `+table, `--json`)
 		out, err := cmd.CombinedOutput()
