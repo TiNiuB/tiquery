@@ -1,12 +1,12 @@
 package main
 
 import (
-	"encoding/json"
 	"flag"
 	"log"
 	"net/http"
 	"os"
-	"os/exec"
+
+	"github.com/tiniub/tiquery/osquery"
 
 	"github.com/gorilla/mux"
 	"github.com/tiniub/tiquery/agent"
@@ -32,30 +32,7 @@ func main() {
 	agent.RegisterAndKeepalive(*tiqueryAddr, *instanceName, *serviceAddr)
 
 	router := mux.NewRouter()
-	router.HandleFunc("/{table}", func(w http.ResponseWriter, r *http.Request) {
-		table := mux.Vars(r)["table"]
-		cmd := exec.Command(`osqueryi`, `SELECT * FROM `+table, `--json`)
-		out, err := cmd.CombinedOutput()
-		if err != nil {
-			w.WriteHeader(500)
-			w.Write([]byte(err.Error()))
-			return
-		}
-
-		var output []map[string]interface{}
-		err = json.Unmarshal(out, &output)
-		if err != nil {
-			w.WriteHeader(500)
-			w.Write([]byte(err.Error()))
-			return
-		}
-		for _, x := range output {
-			x["instance"] = *instanceName
-		}
-
-		res, _ := json.Marshal(output)
-		w.Write(res)
-	})
+	osquery.RegisterAgent(router)
 
 	http.ListenAndServe(*serviceAddr, router)
 }
