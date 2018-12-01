@@ -80,6 +80,5 @@ CREATE TABLE IF NOT EXISTS `cpu` (
         `softirq`   DOUBLE,
         `steal`     DOUBLE,
         `guest`     DOUBLE,
-        `guestNice` DOUBLE,
         `stolen`    DOUBLE
 );
