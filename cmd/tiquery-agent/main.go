@@ -34,7 +34,7 @@ func main() {
 	go func() {
 		for {
 			data := fmt.Sprintf(`{"instance": "%v", "address": "%v"}`, *instanceName, *serviceAddr)
-			http.Post("http://"+*tiqueryAddr+"/osquery/register", "application/json", strings.NewReader(data))
+			http.Post("http://"+*tiqueryAddr+"/agent/register", "application/json", strings.NewReader(data))
 			time.Sleep(time.Second)
 		}
 	}()
