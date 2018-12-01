@@ -1,7 +1,7 @@
-default: tiquery osquery-agent
+default: tiquery tiquery-agent
 
 tiquery:
-	go build -o bin/tiquery cmd/tiquery/main.go
+	GO111MODULE=on go build -o bin/tiquery cmd/tiquery/main.go
 
-osquery-agent:
-	go build -o bin/osquery-agent cmd/osquery-agent/main.go
+tiquery-agent:
+	GO111MODULE=on go build -o bin/tiquery-agent cmd/tiquery-agent/main.go
