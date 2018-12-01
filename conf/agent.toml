@@ -1,0 +1,5 @@
+[[service]]
+type = "pd"
+name = "pd1"
+port = 2379
+log_file = "/var/pd.log"

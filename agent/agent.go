@@ -1,11 +1,10 @@
 package agent
 
 import (
+	"bytes"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
-	"strings"
 	"sync"
 	"time"
 
@@ -14,32 +13,43 @@ import (
 
 var agentHeartbeatInterval = time.Second
 
+// Service defines a service in tidb cluster.
+type Service struct {
+	Type    string `toml:"type" json:"type"`
+	Name    string `toml:"name" json:"name"`
+	Port    int    `toml:"port" json:"port"`
+	LogFile string `toml:"log_file" json:"log_file"`
+}
+
 // Agent is a service to collect remote data.
 type Agent struct {
-	Instance      string
-	Address       string
+	Instance      string    `json:"instance"`
+	Address       string    `json:"address"`
+	Services      []Service `json:"services"`
 	lastHeartbeat time.Time
+}
+
+// NewAgent returns an agent instance.
+func NewAgent() *Agent {
+	return &Agent{}
 }
 
 type agentList struct {
 	sync.Mutex
-	agents map[string]Agent
+	agents map[string]*Agent
 }
 
-func (al *agentList) register(instance, address string) {
+func (al *agentList) register(agent *Agent) {
 	al.Lock()
 	defer al.Unlock()
-	al.agents[instance] = Agent{
-		Instance:      instance,
-		Address:       address,
-		lastHeartbeat: time.Now(),
-	}
+	agent.lastHeartbeat = time.Now()
+	al.agents[agent.Instance] = agent
 }
 
-func (al *agentList) getActiveAgents() []Agent {
+func (al *agentList) getActiveAgents() []*Agent {
 	al.Lock()
 	defer al.Unlock()
-	var agents []Agent
+	var agents []*Agent
 	for instance, agent := range al.agents {
 		if time.Since(agent.lastHeartbeat) < agentHeartbeatInterval*3 {
 			agents = append(agents, agent)
@@ -53,11 +63,6 @@ func (al *agentList) getActiveAgents() []Agent {
 // Register agent service to router.
 func Register(r *mux.Router) {
 	r.HandleFunc("/agent/register", func(w http.ResponseWriter, r *http.Request) {
-		type Data struct {
-			Instance string `json:"instance"`
-			Address  string `json:"address"`
-		}
-		var data Data
 		defer r.Body.Close()
 		payload, err := ioutil.ReadAll(r.Body)
 		if err != nil {
@@ -65,29 +70,30 @@ func Register(r *mux.Router) {
 			w.Write([]byte(err.Error()))
 			return
 		}
-		err = json.Unmarshal(payload, &data)
+		var agt Agent
+		err = json.Unmarshal(payload, &agt)
 		if err != nil {
 			w.WriteHeader(500)
 			w.Write([]byte(err.Error()))
 			return
 		}
-		theAgentList.register(data.Instance, data.Address)
+		theAgentList.register(&agt)
 	})
 }
 
 // RegisterAndKeepalive registers an agent to tiquery and keep it active state.
-func RegisterAndKeepalive(tiqueryAddr, instance, agentAddr string) {
+func RegisterAndKeepalive(tiqueryAddr string, agt *Agent) {
 	go func() {
 		for {
-			data := fmt.Sprintf(`{"instance": "%v", "address": "%v"}`, instance, agentAddr)
-			http.Post("http://"+tiqueryAddr+"/agent/register", "application/json", strings.NewReader(data))
+			data, _ := json.Marshal(agt)
+			http.Post("http://"+tiqueryAddr+"/agent/register", "application/json", bytes.NewReader(data))
 			time.Sleep(agentHeartbeatInterval)
 		}
 	}()
 }
 
 // GetAgentList returns the active agents list.
-func GetAgentList() []Agent {
+func GetAgentList() []*Agent {
 	return theAgentList.getActiveAgents()
 }
 
@@ -95,6 +101,6 @@ var theAgentList *agentList
 
 func init() {
 	theAgentList = &agentList{
-		agents: make(map[string]Agent),
+		agents: make(map[string]*Agent),
 	}
 }
