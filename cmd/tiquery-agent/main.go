@@ -10,6 +10,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/tiniub/tiquery/agent"
 	"github.com/tiniub/tiquery/osquery"
+	"github.com/tiniub/tiquery/psutil"
 )
 
 var (
@@ -52,6 +53,7 @@ func main() {
 
 	router := mux.NewRouter()
 	osquery.RegisterAgent(router)
+	psutil.RegisterAgent(router)
 
 	http.ListenAndServe(*agentAddr, router)
 }

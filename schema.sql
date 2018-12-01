@@ -55,3 +55,31 @@ CREATE TABLE IF NOT EXISTS `service` (
         `port`                  INT,
         `log_file`              VARCHAR(255)
 );
+
+CREATE TABLE IF NOT EXISTS `memory` (
+       `instance`              VARCHAR(255),
+       `pid` BIGINT,
+        `rss`   BIGINT,
+        `vms`    BIGINT,
+        `data`   BIGINT,
+        `stack`  BIGINT,
+        `locked` BIGINT,
+        `swap`  BIGINT
+);
+
+CREATE TABLE IF NOT EXISTS `cpu` (
+       `instance`              VARCHAR(255),
+       `pid` BIGINT,
+        `cpu`       TEXT,
+        `user`      DOUBLE,
+        `system`    DOUBLE,
+        `idle`      DOUBLE,
+        `nice`      DOUBLE,
+        `iowait`    DOUBLE,
+        `irq`       DOUBLE,
+        `softirq`   DOUBLE,
+        `steal`     DOUBLE,
+        `guest`     DOUBLE,
+        `guestNice` DOUBLE,
+        `stolen`    DOUBLE
+);
