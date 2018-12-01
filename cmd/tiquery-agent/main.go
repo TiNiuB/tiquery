@@ -6,10 +6,9 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/tiniub/tiquery/osquery"
-
 	"github.com/gorilla/mux"
 	"github.com/tiniub/tiquery/agent"
+	"github.com/tiniub/tiquery/osquery"
 )
 
 var (
