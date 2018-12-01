@@ -3,15 +3,13 @@ package main
 import (
 	"encoding/json"
 	"flag"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
 	"os/exec"
-	"strings"
-	"time"
 
 	"github.com/gorilla/mux"
+	"github.com/tiniub/tiquery/agent"
 )
 
 var (
@@ -31,13 +29,7 @@ func main() {
 		*instanceName = hostname
 	}
 
-	go func() {
-		for {
-			data := fmt.Sprintf(`{"instance": "%v", "address": "%v"}`, *instanceName, *serviceAddr)
-			http.Post("http://"+*tiqueryAddr+"/agent/register", "application/json", strings.NewReader(data))
-			time.Sleep(time.Second)
-		}
-	}()
+	agent.RegisterAndKeepalive(*tiqueryAddr, *instanceName, *serviceAddr)
 
 	router := mux.NewRouter()
 	router.HandleFunc("/{table}", func(w http.ResponseWriter, r *http.Request) {
