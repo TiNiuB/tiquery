@@ -79,6 +79,24 @@ func Register(r *mux.Router) {
 		}
 		theAgentList.register(&agt)
 	})
+
+	r.HandleFunc("/service", func(w http.ResponseWriter, r *http.Request) {
+		type ServiceData struct {
+			Instance string `json:"instance"`
+			Service
+		}
+		var services []ServiceData
+		for _, agt := range GetAgentList() {
+			for _, s := range agt.Services {
+				services = append(services, ServiceData{
+					Instance: agt.Instance,
+					Service:  s,
+				})
+			}
+		}
+		data, _ := json.Marshal(services)
+		w.Write(data)
+	})
 }
 
 // RegisterAndKeepalive registers an agent to tiquery and keep it active state.

@@ -47,3 +47,11 @@ CREATE TABLE IF NOT EXISTS `pd_config` (
         `key`                   VARCHAR(255),
         `value`                 VARCHAR(255)
 );
+
+CREATE TABLE IF NOT EXISTS `service` (
+        `instance`              VARCHAR(255),
+        `type`                  VARCHAR(255),
+        `name`                  VARCHAR(255),
+        `port`                  INT,
+        `log_file`              VARCHAR(255)
+);
