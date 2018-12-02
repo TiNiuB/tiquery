@@ -2,7 +2,6 @@ package psutil
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 
@@ -80,7 +79,6 @@ func RegisterAgent(r *mux.Router) {
 					continue
 				}
 				tmp := TimesStat{Pid: pid, TimesStat: *stat}
-				fmt.Println(".........", tmp)
 				ret = append(ret, tmp)
 			}
 		}
