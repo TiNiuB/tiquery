@@ -1,3 +1,6 @@
+CREATE DATABASE IF NOT EXISTS TiNiuB;
+USE TiNiuB;
+
 CREATE TABLE IF NOT EXISTS `pd_store` (
         `id`                    BIGINT,
         `address`               VARCHAR(255),
