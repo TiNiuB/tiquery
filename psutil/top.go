@@ -11,6 +11,7 @@ import (
 	"github.com/tiniub/tiquery/agent"
 )
 
+// Register service to router.
 func Register(r *mux.Router) {
 	r.HandleFunc("/psutil_memory", func(w http.ResponseWriter, r *http.Request) {
 		var res []map[string]interface{}
@@ -43,6 +44,7 @@ func Register(r *mux.Router) {
 	})
 }
 
+// RegisterAgent registers the service for tiquery-agent.
 func RegisterAgent(r *mux.Router) {
 	r.HandleFunc("/psutil/memory", func(w http.ResponseWriter, r *http.Request) {
 		pids, err := process.Pids()
@@ -87,11 +89,13 @@ func RegisterAgent(r *mux.Router) {
 	})
 }
 
+// TimesStat is the CPU state for a process.
 type TimesStat struct {
 	Pid int32 `json:"pid"`
 	cpu.TimesStat
 }
 
+// MemoryInfoStat is the Memory state for a process.
 type MemoryInfoStat struct {
 	Pid int32 `json:"pid"`
 	process.MemoryInfoStat
