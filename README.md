@@ -86,6 +86,37 @@ approximate_keys: 40960
 3 rows in set (0.19 sec)
 ```
 
+### Show schedule configuration
+```
+[TiNiuB] select * from pd_config where module = 'schedule';
++----------+---------------------------------+--------+
+| module   | key                             | value  |
++----------+---------------------------------+--------+
+| schedule | max_snapshot_count              | 3      |
+| schedule | max_pending_peer_count          | 16     |
+| schedule | max_merge_region_size           | 20     |
+| schedule | max_merge_region_keys           | 200000 |
+| schedule | split_merge_interval            | 1h0m0s |
+| schedule | patrol_region_interval          | 100ms  |
+| schedule | max_store_down_time             | 30m0s  |
+| schedule | leader_schedule_limit           | 4      |
+| schedule | region_schedule_limit           | 4      |
+| schedule | replica_schedule_limit          | 8      |
+| schedule | merge_schedule_limit            | 8      |
+| schedule | tolerant_size_ratio             | 5      |
+| schedule | low_space_ratio                 | 0.8    |
+| schedule | high_space_ratio                | 0.6    |
+| schedule | disable_raft_learner            | false  |
+| schedule | disable_remove_down_replica     | false  |
+| schedule | disable_replace_offline_replica | false  |
+| schedule | disable_make_up_replica         | false  |
+| schedule | disable_remove_extra_replica    | false  |
+| schedule | disable_location_replacement    | false  |
+| schedule | disable_namespace_relocation    | false  |
++----------+---------------------------------+--------+
+21 rows in set (0.00 sec)
+```
+
 ## Setup guide
 
 1. Build and run `tiquery` anywhere in the cluster.
