@@ -13,7 +13,7 @@ A TiDB hackathon2018 project
 - process information / TCP connection / listening port in the cluster
 - any many more...
 
-## Show case
+## Show cases
 
 ### Show topology of all components
 
