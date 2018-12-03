@@ -3,6 +3,9 @@ A TiDB hackathon2018 project
 
 ![TiNiuB](media/tiniub.png)
 
+* [PPT](media/TiQuery.pdf)
+* [Video](https://pan.baidu.com/s/17GrkLOFFeHyforI5laCHww)
+
 ## What is tiquery used for?
 
 `tiquery` integrates the various information of a TiDB cluster into the form of tables. You can use the standardized SQL language to query almost everything you need to diagnose the cluster, including:
